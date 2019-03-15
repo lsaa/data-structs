@@ -1,23 +1,21 @@
 template <class ty>
 class queue {
-public:
     dlinode<ty>* start;
     dlinode<ty>* end;
+public:
     queue();
     void insertAtEnd(ty);
     ty* removeFromEnd();
     dlinode<ty>* getEnd();
     void setEnd(dlinode<ty>*);
-    ty* operator[](int);
-    ty* get(int);
+    ty operator[](int);
+    ty get(int);
     void setStart(dlinode<ty>*);
     dlinode<ty>* getStart();
     void insertAtStart(ty);
     ty* removeFromStart();
     bool isEmpty();
     void print();
-	void erase(dlinode<ty>*);
-	int size();
 };
 
 template<class ty>
@@ -57,13 +55,18 @@ void queue<ty>::insertAtEnd(ty v) {
 
 template <class ty>
 ty* queue<ty>::removeFromEnd() {
-    if (this->isEmpty())
+    if (this->isEmpty()) 
         return NULL;
 
     dlinode<ty>* old = new dlinode<ty>(*getEnd());
+    if (start == end) {
+        start = NULL;
+        end = NULL;
+        return &(old->value);
+    }
+
     setEnd(getEnd()->prev);
-    if (end)
-        getEnd()->next = NULL;
+	getEnd()->next = NULL;
     return &(old->value);
 }
 
@@ -103,19 +106,19 @@ void queue<ty>::insertAtStart(ty v) {
 }
 
 template <class ty>
-ty* queue<ty>::get(int i) {
+ty queue<ty>::get(int i) {
     if (!isEmpty()) {
         dlinode<ty>* cNode = getStart();
         int j = 0;
         do {
             if (i == j)
-                return &cNode->value;
+                return cNode->value;
             cNode = cNode->next;
             j++;
         } while (cNode != NULL);
-        return NULL;
+        return -1;
     } else {
-        return NULL;
+        return -1;
     }
 }
 
@@ -132,7 +135,7 @@ void queue<ty>::print() {
             } else {
                 std::cout << cNode->value << ", ";
             }
-
+            
             cNode = cNode->next;
         }
         printf("]\n");
@@ -140,43 +143,25 @@ void queue<ty>::print() {
 }
 
 template <class ty>
-ty* queue<ty>::operator[](int i) {
+ty queue<ty>::operator[](int i) {
     return get(i);
 }
 
 template <class ty>
 ty* queue<ty>::removeFromStart() {
-    if (isEmpty())
+    if (isEmpty()) 
         return NULL;
 
     dlinode<ty>* old = new dlinode<ty>(*start);
+
+    if (start == end) {
+        start = NULL;
+        end = NULL;
+        return &(old->value);
+    }
     start = start->next;
-    if (start)
-        start->prev = NULL;
-    return &old->value;
+    start->prev = NULL;
+    return &(old->value);
 }
 
-template <class ty>
-void queue<ty>::erase(dlinode<ty>* e) {
-	if (e == start) {
-		removeFromStart();
-		return;
-	} else if (e == end) {
-		removeFromEnd();
-		return;
-	}
 
-	e->prev->next = e->next;
-	e->next->prev = e->prev;
-}
-
-template <class ty>
-int queue<ty>::size() {
-	int r = 0;
-	dlinode<ty>* cn = start;
-	while (cn) {
-		r++;
-		cn = cn->next;
-	}
-	return r;
-}

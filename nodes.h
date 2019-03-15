@@ -12,37 +12,31 @@ struct linode {
 };
 
 template <class ty>
-class BSTnode {
+class btrnode {
 public:
-    BSTnode();
-	~BSTnode();
+    btrnode();
     ty value;
-    BSTnode<ty>* father;
-    BSTnode<ty>* left;
-    BSTnode<ty>* right;
+    btrnode<ty>* father;
+    btrnode<ty>* left;
+    btrnode<ty>* right;
 
     bool isRight();
     bool isLeft();
     bool isLeaf();
     bool isHalf();
-	BSTnode<ty>* getOnlyChild();
-    BSTnode<ty>* brother();
+    btrnode<ty>* brother();
+    btrnode<ty>* getOnlyChild();
 };
 
 template <class ty>
-BSTnode<ty>::~BSTnode() {
-	free(this);
-}
-
-template <class ty>
-BSTnode<ty>::BSTnode() {
+btrnode<ty>::btrnode() {
     father = NULL;
     left = NULL;
     right = NULL;
 }
 
 template <class ty>
-bool BSTnode<ty>::isRight() {
+bool btrnode<ty>::isRight() {
     if (father != NULL) {
         if (father->right == this)
             return true;
@@ -51,7 +45,7 @@ bool BSTnode<ty>::isRight() {
 }
 
 template <class ty>
-bool BSTnode<ty>::isLeft() {
+bool btrnode<ty>::isLeft() {
     if (father != NULL) {
         if (father->left == this)
             return true;
@@ -60,7 +54,7 @@ bool BSTnode<ty>::isLeft() {
 }
 
 template <class ty>
-BSTnode<ty>* BSTnode<ty>::brother() {
+btrnode<ty>* btrnode<ty>::brother() {
     if (father != NULL) {
         if (father->left == this)
             return father->right;
@@ -70,19 +64,40 @@ BSTnode<ty>* BSTnode<ty>::brother() {
 }
 
 template <class ty>
-bool BSTnode<ty>::isLeaf() {
+bool btrnode<ty>::isLeaf() {
     return (left == NULL && right == NULL);
 }
 
 template <class ty>
-bool BSTnode<ty>::isHalf() {
+bool btrnode<ty>::isHalf() {
     return (left == NULL || right == NULL);
 }
 
 template <class ty>
-BSTnode<ty>* BSTnode<ty>::getOnlyChild() {
-	if (left)
-		return left;
-	else
-		return right;
+btrnode<ty>* btrnode<ty>::getOnlyChild() {
+    if (left)
+        return left;
+    return right;
+}
+
+template <class ty>
+class AVLnode : public btrnode<ty> {
+public:
+    AVLnode();
+    ty value;
+    AVLnode<ty>* father;
+    AVLnode<ty>* left;
+    AVLnode<ty>* right;
+    int height;
+
+    //AVLnode<ty>* brother();
+    //AVLnode<ty>* getOnlyChild();
+};
+
+template <class ty>
+AVLnode<ty>::AVLnode() {
+    left = NULL;
+    right = NULL;
+    father = NULL;
+    height = 0;
 }

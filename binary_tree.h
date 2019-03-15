@@ -1,51 +1,46 @@
 template <class ty>
-class BST {
+class btree {
 public:
-    BST();
-    BSTnode<ty>* root;
+    btree();
+    btrnode<ty>* root;
 
-    BSTnode<ty>* search(ty);
-    BSTnode<ty>* search(BSTnode<ty>*, ty);
+    btrnode<ty>* search(ty);
+    btrnode<ty>* search(btrnode<ty>*, ty);
 
-    BSTnode<ty>* minimum();
-    BSTnode<ty>* minimum(BSTnode<ty>*);
+    btrnode<ty>* minimum();
+    btrnode<ty>* minimum(btrnode<ty>*);
 
-    BSTnode<ty>* maximum();
-    BSTnode<ty>* maximum(BSTnode<ty>*);
+    btrnode<ty>* maximum();
+    btrnode<ty>* maximum(btrnode<ty>*);
 
-    BSTnode<ty>* successor();
-    BSTnode<ty>* successor(BSTnode<ty>*);
-
-    BSTnode<ty>* predecessor();
-    BSTnode<ty>* predecessor(BSTnode<ty>*);
+    btrnode<ty>* successor();
+    btrnode<ty>* successor(btrnode<ty>*);
 
     void insert(ty);
-    void insert(BSTnode<ty>*, ty);
+    void insert(btrnode<ty>*, ty);
 
-    void remove(BSTnode<ty>*);
+    void remove(btrnode<ty>*);
 
     void inorder();
-    void inorder(BSTnode<ty>*);
+    void inorder(btrnode<ty>*);
 
     void preorder();
-    void preorder(BSTnode<ty>*);
+    void preorder(btrnode<ty>*);
 
     void postorder();
-    void postorder(BSTnode<ty>*);
+    void postorder(btrnode<ty>*);
 
-	ty minAt(ty);
-
-	BSTnode<ty>* pred_not_in_tree(ty);
-	void pred_not_in_tree(BSTnode<ty>*, ty);
+    btrnode<ty>* getRoot();
+    void setRoot(btrnode<ty>*);
 };
 
 template <class ty>
-BST<ty>::BST() {
+btree<ty>::btree() {
     root = NULL;
 }
 
 template <class ty>
-BSTnode<ty>* BST<ty>::search(BSTnode<ty>* current, ty a) {
+btrnode<ty>* btree<ty>::search(btrnode<ty>* current, ty a) {
     int steps = 0;
     while (current != NULL) {
         if (current->value == a) {
@@ -60,7 +55,7 @@ BSTnode<ty>* BST<ty>::search(BSTnode<ty>* current, ty a) {
 }
 
 template <class ty>
-BSTnode<ty>* BST<ty>::minimum(BSTnode<ty>* current) {
+btrnode<ty>* btree<ty>::minimum(btrnode<ty>* current) {
     while (current != NULL) {
         if (current->left == NULL) {
             return current;
@@ -71,7 +66,7 @@ BSTnode<ty>* BST<ty>::minimum(BSTnode<ty>* current) {
 }
 
 template <class ty>
-BSTnode<ty>* BST<ty>::maximum(BSTnode<ty>* current) {
+btrnode<ty>* btree<ty>::maximum(btrnode<ty>* current) {
     while (current != NULL) {
         if (current->right == NULL) {
             return current;
@@ -82,8 +77,8 @@ BSTnode<ty>* BST<ty>::maximum(BSTnode<ty>* current) {
 }
 
 template <class ty>
-BSTnode<ty>* BST<ty>::search(ty a) {
-    BSTnode<ty>* current = root;
+btrnode<ty>* btree<ty>::search(ty a) {
+    btrnode<ty>* current = root;
     int steps = 0;
     while (current != NULL) {
         if (current->value == a) {
@@ -98,8 +93,8 @@ BSTnode<ty>* BST<ty>::search(ty a) {
 }
 
 template <class ty>
-BSTnode<ty>* BST<ty>::minimum() {
-    BSTnode<ty>* current = root;
+btrnode<ty>* btree<ty>::minimum() {
+    btrnode<ty>* current = root;
     while (current != NULL) {
         if (current->left == NULL) {
             return current;
@@ -110,8 +105,8 @@ BSTnode<ty>* BST<ty>::minimum() {
 }
 
 template <class ty>
-BSTnode<ty>* BST<ty>::maximum() {
-    BSTnode<ty>* current = root;
+btrnode<ty>* btree<ty>::maximum() {
+    btrnode<ty>* current = root;
     while (current != NULL) {
         if (current->right == NULL) {
             return current;
@@ -122,57 +117,56 @@ BSTnode<ty>* BST<ty>::maximum() {
 }
 
 template <class ty>
-void BST<ty>::insert(ty a) {
-	BSTnode<ty>* x = root;
-    BSTnode<ty>* y = NULL;
+void btree<ty>::insert(ty a) {
+    btrnode<ty>* x = root;
+    btrnode<ty>* y = NULL;
 
     while (x != NULL) {
         y = x;
-        if (a <= x->value)
+        if (a <= x->value) 
             x = x->left;
         else
             x = x->right;
     }
-
-    BSTnode<ty>* novo = new BSTnode<ty>();
+    
+    btrnode<ty>* novo = new btrnode<ty>();
     novo->father = y;
     novo->value = a;
 
-    if (y == NULL)
+    if (y == NULL) 
         root = novo;
-    else if (a <= y->value)
-        y->left = novo;
-    else
-		y->right = novo;
-}
-
-template <class ty>
-void BST<ty>::insert(BSTnode<ty>* x, ty a) {
-    BSTnode<ty>* y = NULL;
-
-    while (x != NULL) {
-        y = x;
-        if (a <= x->value)
-            x = x->left;
-        else
-            x = x->right;
-    }
-
-    BSTnode<ty>* novo = new BSTnode<ty>();
-    novo->father = y;
-    novo->value = a;
-
-    if (y == NULL)
-        root = novo;
-    else if (a <= y->value)
+    else if (a <= y->value) 
         y->left = novo;
     else
         y->right = novo;
 }
 
+template <class ty>
+void btree<ty>::insert(btrnode<ty>* x, ty a) {
+    btrnode<ty>* y = NULL;
+
+    while (x != NULL) {
+        y = x;
+        if (a < x->value) 
+            x = x->left;
+        else
+            x = x->right;
+    }
+    
+    btrnode<ty>* novo = new btrnode<ty>();
+    novo->father = y;
+    novo->value = a;
+
+    if (y == NULL) 
+        root = novo;
+    else if (a < y->value) 
+        y->left = novo;
+    else
+        y->right = novo;
+}
 
 template <class ty>
-void BST<ty>::remove(BSTnode<ty>* toDelete) {
+void btree<ty>::remove(btrnode<ty>* toDelete) {
     if (toDelete == NULL)
         return;
 
@@ -187,13 +181,12 @@ void BST<ty>::remove(BSTnode<ty>* toDelete) {
             toDelete->father->right = NULL;
         else
             toDelete->father->left = NULL;
-
+    
     // Single Child
     } else if (toDelete->isHalf()) {
         if (toDelete->father == NULL) {
             root = toDelete->getOnlyChild();
             root->father = NULL;
-            return;
         }
 
         if (toDelete->isRight()) {
@@ -202,16 +195,16 @@ void BST<ty>::remove(BSTnode<ty>* toDelete) {
             toDelete->father->left = toDelete->getOnlyChild();
         }
 
-    // Two Children
+    // Two Children 
     } else {
-        BSTnode<ty>* suc = successor(toDelete);
+        btrnode<ty>* suc = successor(toDelete);
         toDelete->value = suc->value;
         remove(suc);
     }
 }
 
 template <class ty>
-void BST<ty>::inorder(BSTnode<ty>* x) {
+void btree<ty>::inorder(btrnode<ty>* x) {
     if (x != NULL) {
         inorder(x->left);
         printf("%d ", x->value);
@@ -220,8 +213,8 @@ void BST<ty>::inorder(BSTnode<ty>* x) {
 }
 
 template <class ty>
-void BST<ty>::inorder() {
-    BSTnode<ty>* x = root;
+void btree<ty>::inorder() {
+    btrnode<ty>* x = root;
     if (x != NULL) {
         inorder(x->left);
         printf("%d ", x->value);
@@ -230,13 +223,13 @@ void BST<ty>::inorder() {
 }
 
 template <class ty>
-BSTnode<ty>* BST<ty>::successor() {
-    BSTnode<ty>* x = root;
-
+btrnode<ty>* btree<ty>::successor() {
+    btrnode<ty>* x = root;
+    
     if (x->right != NULL)
         return minimum(x->right);
 
-    BSTnode<ty>* y = x->father;
+    btrnode<ty>* y = x->father;
 
     while (y != NULL && x == y->right) {
         x = y;
@@ -247,11 +240,11 @@ BSTnode<ty>* BST<ty>::successor() {
 }
 
 template <class ty>
-BSTnode<ty>* BST<ty>::successor(BSTnode<ty>* x) {
+btrnode<ty>* btree<ty>::successor(btrnode<ty>* x) {
     if (x->right != NULL)
         return minimum(x->right);
 
-    BSTnode<ty>* y = x->father;
+    btrnode<ty>* y = x->father;
 
     while (y != NULL && x == y->right) {
         x = y;
@@ -262,113 +255,11 @@ BSTnode<ty>* BST<ty>::successor(BSTnode<ty>* x) {
 }
 
 template <class ty>
-void BST<ty>::preorder(BSTnode<ty>* x) {
-    if (x != NULL) {
-        printf(" %d", x->value);
-        preorder(x->left);
-        preorder(x->right);
-    }
+btrnode<ty>* btree<ty>::getRoot() {
+    return root;
 }
 
 template <class ty>
-void BST<ty>::preorder() {
-    BSTnode<ty>* x = root;
-    if (x != NULL) {
-        printf("%d", x->value);
-        preorder(x->left);
-        preorder(x->right);
-    }
-}
-
-template <class ty>
-void BST<ty>::postorder(BSTnode<ty>* x) {
-    if (x != NULL) {
-        postorder(x->left);
-        postorder(x->right);
-        printf("%d ", x->value);
-    }
-}
-
-template <class ty>
-void BST<ty>::postorder() {
-    BSTnode<ty>* x = root;
-    if (x != NULL) {
-        postorder(x->left);
-        postorder(x->right);
-        printf("%d ", x->value);
-    }
-}
-
-template <class ty>
-BSTnode<ty>* BST<ty>::predecessor() {
-    BSTnode<ty>* x = root;
-	if (x == NULL)
-		return NULL;
-
-    if (x->left != NULL)
-        return maximum(x->left);
-
-    BSTnode<ty>* y = x->father;
-
-    while (y != NULL && x == y->left) {
-        x = y;
-        y = y->father;
-    }
-
-    return y;
-}
-
-template <class ty>
-BSTnode<ty>* BST<ty>::predecessor(BSTnode<ty>* x) {
-	if (x == NULL)
-		return NULL;
-
-    if (x->right != NULL)
-        return maximum(x->left);
-
-    BSTnode<ty>* y = x->father;
-
-    while (y != NULL && x == y->left) {
-        x = y;
-        y = y->father;
-    }
-
-    return y;
-}
-
-template <class ty>
-BSTnode<ty>* BST<ty>::pred_not_in_tree(ty a) {
-	BSTnode<ty>* x = root;
-	BSTnode<ty>* tmp = NULL;
-
-	while (x != NULL) {
-		if (x->value >= a) {
-			x = x->left;
-		} else {
-			x = x->right;
-			tmp = x;
-		}
-	}
-
-	if (tmp)
-		return tmp;
-	else
-		return NULL;
-}
-
-template <class ty>
-ty BST<ty>::minAt(ty a) {
-	BSTnode<ty>* x = root;
-
-	ty ans = 0;
-	while (x != NULL) {
-		if (x->value > ans && x->value < a)
-			ans = x->value;
-		if (x->value >= a)
-			x = x->left;
-		else
-			x = x->right;
-	}
-
-	return ans;
+void btree<ty>::setRoot(btrnode<ty>* a) {
+    root = a;
 }
